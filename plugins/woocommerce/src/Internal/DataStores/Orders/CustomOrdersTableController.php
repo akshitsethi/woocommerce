@@ -5,6 +5,9 @@
 
 namespace Automattic\WooCommerce\Internal\DataStores\Orders;
 
+use Automattic\WooCommerce\Internal\Updates\WCActionUpdateController;
+use Symfony\Component\VarDumper\Cloner\Data;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -302,6 +305,7 @@ class CustomOrdersTableController {
 		if ( ! $this->is_feature_visible() || 'custom_data_stores' !== $section_id ) {
 			return $settings;
 		}
+		$updates_controller = wc_get_container()->get( WCActionUpdateController::class );
 
 		if ( $this->data_synchronizer->check_orders_table_exists() ) {
 			$settings[] = array(
@@ -349,7 +353,7 @@ class CustomOrdersTableController {
 						sprintf( _n( 'There\'s %s order pending sync!', 'There are %s orders pending sync!', $current_pending_count, 'woocommerce' ), $current_pending_count, 'woocommerce' );
 				}
 
-				if ( $this->data_synchronizer->pending_data_sync_is_in_progress() ) {
+				if ( $updates_controller->is_update_in_progress( get_class( $this->data_synchronizer ) ) ) {
 					$text .= __( "<br/>Synchronization for these orders is currently in progress.<br/>The authoritative table can't be changed until sync completes.", 'woocommerce' );
 				} else {
 					$text .= __( "<br/>The authoritative table can't be changed until these orders are synchronized.", 'woocommerce' );
@@ -481,7 +485,8 @@ class CustomOrdersTableController {
 		// We do this check here, and not in process_pre_update_option, so that if for some reason
 		// the setting is enabled but no sync is in process, sync will start by just saving the
 		// settings even without modifying them.
-		$this->data_synchronizer->maybe_start_synchronizing_pending_orders( true );
+		$update_controller = wc_get_container()->get( WCActionUpdateController::class );
+		$update_controller->start_update( DataSynchronizer::class );
 	}
 
 	/**

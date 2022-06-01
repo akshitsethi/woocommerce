@@ -70,4 +70,6 @@ export type ProductQuery<
 	min_price: string;
 	max_price: string;
 	stock_status: 'instock' | 'outofstock';
+	id: number;
+	force: boolean;
 };

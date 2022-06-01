@@ -24,6 +24,7 @@ export type ProductState = {
 	productsCount: Record< string, number >;
 	errors: Record< string, unknown >;
 	data: Record< number, PartialProduct >;
+	requesting: Record< string, boolean >;
 };
 
 const reducer: Reducer< ProductState, Actions > = (
@@ -32,6 +33,7 @@ const reducer: Reducer< ProductState, Actions > = (
 		productsCount: {},
 		errors: {},
 		data: {},
+		requesting: {},
 	},
 	payload
 ) => {
@@ -95,6 +97,51 @@ const reducer: Reducer< ProductState, Actions > = (
 						[ getProductResourceName(
 							payload.query
 						) ]: payload.error,
+					},
+				};
+			case TYPES.UPDATE_PRODUCT_ERROR:
+				return {
+					...state,
+					errors: {
+						...state.errors,
+						[ getProductResourceName( {
+							id: payload.id,
+							...payload.query,
+						} ) ]: payload.error,
+					},
+					requesting: {
+						...state.requesting,
+						[ getProductResourceName( {
+							id: payload.id,
+						} ) ]: false,
+					},
+				};
+			case TYPES.SET_IS_REQUESTING:
+				return {
+					...state,
+					requesting: {
+						...state.requesting,
+						[ getProductResourceName( {
+							id: payload.id,
+						} ) ]: payload.isRequesting,
+					},
+				};
+			case TYPES.UPDATE_PRODUCT:
+				const theProductData = state.data || {};
+				return {
+					...state,
+					data: {
+						...theProductData,
+						[ payload.id ]: {
+							...( theProductData[ payload.id ] || {} ),
+							...payload.product,
+						},
+					},
+					requesting: {
+						...state.requesting,
+						[ getProductResourceName( {
+							id: payload.id,
+						} ) ]: false,
 					},
 				};
 			default:

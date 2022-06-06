@@ -51,6 +51,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			 */
 			do_action( 'woocommerce_review_meta', $comment );
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_review_before_comment_text', $comment );
 
 			/**
@@ -60,6 +65,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			 */
 			do_action( 'woocommerce_review_comment_text', $comment );
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_review_after_comment_text', $comment );
 			?>
 

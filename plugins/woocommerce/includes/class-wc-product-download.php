@@ -46,6 +46,11 @@ class WC_Product_Download implements ArrayAccess {
 	 * @return array
 	 */
 	public function get_allowed_mime_types() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_downloadable_file_allowed_mime_types', get_allowed_mime_types() );
 	}
 
@@ -191,6 +196,11 @@ class WC_Product_Download implements ArrayAccess {
 		} elseif ( substr( WP_CONTENT_DIR, strlen( untrailingslashit( ABSPATH ) ) ) === substr( $file_url, 0, strlen( substr( WP_CONTENT_DIR, strlen( untrailingslashit( ABSPATH ) ) ) ) ) ) {
 			$file_url = realpath( WP_CONTENT_DIR . substr( $file_url, 11 ) );
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_downloadable_file_exists', file_exists( $file_url ), $this->get_file() );
 	}
 

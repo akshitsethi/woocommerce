@@ -119,6 +119,11 @@ class WC_Shipping {
 	 * Initialize shipping.
 	 */
 	public function init() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_shipping_init' );
 	}
 
@@ -145,6 +150,11 @@ class WC_Shipping {
 			}
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_shipping_methods', $shipping_methods );
 	}
 
@@ -239,6 +249,11 @@ class WC_Shipping {
 			);
 			$this->shipping_classes = ! is_wp_error( $classes ) ? $classes : array();
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_shipping_classes', $this->shipping_classes );
 	}
 

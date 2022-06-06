@@ -369,6 +369,11 @@ class WC_REST_Product_Variations_Controller extends WC_REST_Product_Variations_V
 				$upload = wc_rest_upload_image_from_url( esc_url_raw( $image['src'] ) );
 
 				if ( is_wp_error( $upload ) ) {
+					/**
+					 * Hook
+					 *
+					 * @since
+					 */
 					if ( ! apply_filters( 'woocommerce_rest_suppress_image_upload_error', false, $upload, $variation->get_id(), array( $image ) ) ) {
 						throw new WC_REST_Exception( 'woocommerce_variation_image_upload_error', $upload->get_error_message(), 400 );
 					}
@@ -607,7 +612,7 @@ class WC_REST_Product_Variations_Controller extends WC_REST_Product_Variations_V
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'low_stock_amount'       => array(
+				'low_stock_amount'      => array(
 					'description' => __( 'Low Stock amount for the variation.', 'woocommerce' ),
 					'type'        => array( 'integer', 'null' ),
 					'context'     => array( 'view', 'edit' ),

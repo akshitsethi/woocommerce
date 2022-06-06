@@ -154,6 +154,11 @@ class WC_Checkout {
 			case 'payment_method':
 				return $this->legacy_posted_data['payment_method'];
 			case 'customer_id':
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				return apply_filters( 'woocommerce_checkout_customer_id', get_current_user_id() );
 			case 'shipping_methods':
 				return (array) WC()->session->get( 'chosen_shipping_methods' );
@@ -181,6 +186,11 @@ class WC_Checkout {
 	 * @return boolean
 	 */
 	public function is_registration_required() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_checkout_registration_required', 'yes' !== get_option( 'woocommerce_enable_guest_checkout' ) );
 	}
 
@@ -191,6 +201,11 @@ class WC_Checkout {
 	 * @return boolean
 	 */
 	public function is_registration_enabled() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_checkout_registration_enabled', 'yes' === get_option( 'woocommerce_enable_signup_and_login_from_checkout' ) );
 	}
 
@@ -264,6 +279,11 @@ class WC_Checkout {
 				'autocomplete' => 'new-password',
 			);
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$this->fields = apply_filters( 'woocommerce_checkout_fields', $this->fields );
 
 		foreach ( $this->fields as $field_type => $fields ) {
@@ -286,6 +306,11 @@ class WC_Checkout {
 	 * When we process the checkout, lets ensure cart items are rechecked to prevent checkout.
 	 */
 	public function check_cart_items() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_check_cart_items' );
 	}
 
@@ -371,6 +396,11 @@ class WC_Checkout {
 			$order->hold_applied_coupons( $data['billing_email'] );
 			$order->set_created_via( 'checkout' );
 			$order->set_cart_hash( $cart_hash );
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$order->set_customer_id( apply_filters( 'woocommerce_checkout_customer_id', get_current_user_id() ) );
 			$order->set_currency( get_woocommerce_currency() );
 			$order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
@@ -581,6 +611,11 @@ class WC_Checkout {
 	 */
 	public function create_order_tax_lines( &$order, $cart ) {
 		foreach ( array_keys( $cart->get_cart_contents_taxes() + $cart->get_shipping_taxes() + $cart->get_fee_taxes() ) as $tax_rate_id ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			if ( $tax_rate_id && apply_filters( 'woocommerce_cart_remove_taxes_zero_rate_id', 'zero-rated' ) !== $tax_rate_id ) {
 				$item = new WC_Order_Item_Tax();
 				$item->set_props(
@@ -680,7 +715,7 @@ class WC_Checkout {
 		);
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
-		$skipped = array();
+		$skipped        = array();
 		$form_was_shown = isset( $_POST['woocommerce-process-checkout-nonce'] ); // phpcs:disable WordPress.Security.NonceVerification.Missing
 
 		foreach ( $this->get_checkout_fields() as $fieldset_key => $fieldset ) {
@@ -719,6 +754,11 @@ class WC_Checkout {
 					}
 				}
 
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$data[ $key ] = apply_filters( 'woocommerce_process_checkout_' . $type . '_field', apply_filters( 'woocommerce_process_checkout_field_' . $key, $value ) );
 			}
 		}
@@ -732,6 +772,11 @@ class WC_Checkout {
 		// BW compatibility.
 		$this->legacy_posted_data = $data;
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_checkout_posted_data', $data );
 	}
 
@@ -789,6 +834,11 @@ class WC_Checkout {
 								/* translators: %s: field name */
 								$postcode_validation_notice = sprintf( __( '%s is not a valid postcode / ZIP.', 'woocommerce' ), '<strong>' . esc_html( $field_label ) . '</strong>' );
 						}
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						$errors->add( $key . '_validation', apply_filters( 'woocommerce_checkout_postcode_validation_notice', $postcode_validation_notice, $country, $data[ $key ] ), array( 'id' => $key ) );
 					}
 				}
@@ -886,6 +936,11 @@ class WC_Checkout {
 			}
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_after_checkout_validation', $data, $errors );
 	}
 
@@ -985,6 +1040,11 @@ class WC_Checkout {
 		if ( isset( $result['result'] ) && 'success' === $result['result'] ) {
 			$result['order_id'] = $order_id;
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$result = apply_filters( 'woocommerce_payment_successful_result', $result, $order_id );
 
 			if ( ! wp_doing_ajax() ) {
@@ -1010,6 +1070,11 @@ class WC_Checkout {
 
 		if ( ! wp_doing_ajax() ) {
 			wp_safe_redirect(
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				apply_filters( 'woocommerce_checkout_no_payment_needed_redirect', $order->get_checkout_order_received_url(), $order )
 			);
 			exit;
@@ -1018,6 +1083,11 @@ class WC_Checkout {
 		wp_send_json(
 			array(
 				'result'   => 'success',
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				'redirect' => apply_filters( 'woocommerce_checkout_no_payment_needed_redirect', $order->get_checkout_order_received_url(), $order ),
 			)
 		);
@@ -1030,6 +1100,11 @@ class WC_Checkout {
 	 * @param array $data Posted data.
 	 */
 	protected function process_customer( $data ) {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$customer_id = apply_filters( 'woocommerce_checkout_customer_id', get_current_user_id() );
 
 		if ( ! is_user_logged_in() && ( $this->is_registration_required() || ! empty( $data['createaccount'] ) ) ) {
@@ -1101,6 +1176,11 @@ class WC_Checkout {
 			$customer->save();
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_checkout_update_user_meta', $customer_id, $data );
 	}
 
@@ -1154,12 +1234,22 @@ class WC_Checkout {
 			wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );
 			wc_set_time_limit( 0 );
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_before_checkout_process' );
 
 			if ( WC()->cart->is_empty() ) {
 				throw new Exception( $expiry_message );
 			}
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_checkout_process' );
 
 			$errors      = new WP_Error();
@@ -1191,6 +1281,11 @@ class WC_Checkout {
 					throw new Exception( __( 'Unable to create order.', 'woocommerce' ) );
 				}
 
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				do_action( 'woocommerce_checkout_order_processed', $order_id, $posted_data, $order );
 
 				/**
@@ -1278,6 +1373,11 @@ class WC_Checkout {
 			$value = null;
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'default_checkout_' . $input, $value, $input );
 	}
 }

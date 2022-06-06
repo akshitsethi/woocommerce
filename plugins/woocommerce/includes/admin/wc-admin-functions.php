@@ -53,6 +53,11 @@ function wc_get_screen_ids() {
 		}
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_screen_ids', $screen_ids );
 }
 
@@ -83,13 +88,18 @@ function wc_create_page( $slug, $option = '', $page_title = '', $page_content = 
 
 	if ( strlen( $page_content ) > 0 ) {
 		// Search for an existing page with the specified page content (typically a shortcode).
-		$shortcode = str_replace( array( '<!-- wp:shortcode -->', '<!-- /wp:shortcode -->' ), '', $page_content );
+		$shortcode        = str_replace( array( '<!-- wp:shortcode -->', '<!-- /wp:shortcode -->' ), '', $page_content );
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' ) AND post_content LIKE %s LIMIT 1;", "%{$shortcode}%" ) );
 	} else {
 		// Search for an existing page with the specified page slug.
 		$valid_page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' )  AND post_name = %s LIMIT 1;", $slug ) );
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	$valid_page_found = apply_filters( 'woocommerce_create_page_id', $valid_page_found, $slug, $page_content );
 
 	if ( $valid_page_found ) {
@@ -128,6 +138,11 @@ function wc_create_page( $slug, $option = '', $page_title = '', $page_content = 
 		);
 		$page_id   = wp_insert_post( $page_data );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_page_created', $page_id, $page_data );
 	}
 

@@ -165,6 +165,11 @@ class Filterer {
 			$query = $this->get_product_counts_query_not_using_lookup_table( $tax_query, $meta_query, $term_ids );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$query     = apply_filters( 'woocommerce_get_filtered_term_product_counts_query', $query );
 		$query_sql = implode( ' ', $query );
 

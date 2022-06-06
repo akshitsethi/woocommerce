@@ -327,6 +327,11 @@ class ReportCSVExporter extends \WC_CSV_Batch_Exporter {
 			$row = $this->get_raw_row_data( $item );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( "woocommerce_export_{$this->export_type}_row_data", $row, $item );
 	}
 }

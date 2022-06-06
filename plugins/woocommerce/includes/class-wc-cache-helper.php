@@ -42,7 +42,7 @@ class WC_Cache_Helper {
 	 */
 	public static function additional_nocache_headers( $headers ) {
 		global $wp_query;
-		
+
 		$agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		$set_cache = false;
@@ -164,6 +164,11 @@ class WC_Cache_Helper {
 		$location['state']    = $customer->get_billing_state();
 		$location['postcode'] = $customer->get_billing_postcode();
 		$location['city']     = $customer->get_billing_city();
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_geolocation_ajax_get_location_hash', substr( md5( implode( '', $location ) ), 0, 12 ), $location, $customer );
 	}
 
@@ -341,6 +346,11 @@ class WC_Cache_Helper {
 		if ( ! wp_using_ext_object_cache() && ! empty( $version ) ) {
 			global $wpdb;
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$limit = apply_filters( 'woocommerce_delete_version_transients_limit', 1000 );
 
 			if ( ! $limit ) {

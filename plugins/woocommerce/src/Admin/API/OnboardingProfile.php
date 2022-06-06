@@ -140,6 +140,11 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 	 * @return array
 	 */
 	protected function filter_industries( $industries ) {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters(
 			'woocommerce_admin_onboarding_industries',
 			$industries
@@ -158,6 +163,11 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 		$onboarding_data = (array) get_option( Profile::DATA_OPTION, array() );
 		$profile_data    = array_merge( $onboarding_data, $query_args );
 		update_option( Profile::DATA_OPTION, $profile_data );
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_onboarding_profile_data_updated', $onboarding_data, $query_args );
 
 		$result = array(
@@ -440,6 +450,11 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 			),
 		);
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_rest_onboarding_profile_properties', $properties );
 	}
 
@@ -501,6 +516,11 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 
 		$params['context'] = $this->get_context_param( array( 'default' => 'view' ) );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_rest_onboarding_profile_collection_params', $params );
 	}
 }

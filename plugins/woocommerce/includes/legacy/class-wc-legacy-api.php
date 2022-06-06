@@ -157,7 +157,13 @@ class WC_Legacy_API {
 	 */
 	public function register_resources( $server ) {
 
-		$api_classes = apply_filters( 'woocommerce_api_classes',
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
+		$api_classes = apply_filters(
+			'woocommerce_api_classes',
 			array(
 				'WC_API_Coupons',
 				'WC_API_Customers',
@@ -205,7 +211,8 @@ class WC_Legacy_API {
 		$this->server = new WC_API_Server( $GLOBALS['wp']->query_vars['wc-api-route'] );
 
 		// Register available resources for legacy v1 REST API request.
-		$api_classes = apply_filters( 'woocommerce_api_classes',
+		$api_classes = apply_filters(
+			'woocommerce_api_classes',
 			array(
 				'WC_API_Customers',
 				'WC_API_Orders',
@@ -252,7 +259,8 @@ class WC_Legacy_API {
 		$this->server = new WC_API_Server( $GLOBALS['wp']->query_vars['wc-api-route'] );
 
 		// Register available resources for legacy v2 REST API request.
-		$api_classes = apply_filters( 'woocommerce_api_classes',
+		$api_classes = apply_filters(
+			'woocommerce_api_classes',
 			array(
 				'WC_API_Customers',
 				'WC_API_Orders',

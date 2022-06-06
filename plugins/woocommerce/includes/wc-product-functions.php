@@ -93,6 +93,11 @@ function wc_get_product_object( $product_type, $product_id = 0 ) {
  * @return bool
  */
 function wc_product_sku_enabled() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'wc_product_sku_enabled', true );
 }
 
@@ -102,6 +107,11 @@ function wc_product_sku_enabled() {
  * @return bool
  */
 function wc_product_weight_enabled() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'wc_product_weight_enabled', true );
 }
 
@@ -111,6 +121,11 @@ function wc_product_weight_enabled() {
  * @return bool
  */
 function wc_product_dimensions_enabled() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'wc_product_dimensions_enabled', true );
 }
 
@@ -150,6 +165,11 @@ function wc_delete_product_transients( $post_id = 0 ) {
 	// Increments the transient version to invalidate cache.
 	WC_Cache_Helper::get_transient_version( 'product', true );
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	do_action( 'woocommerce_delete_product_transients', $post_id );
 }
 
@@ -225,13 +245,18 @@ function wc_product_post_type_link( $permalink, $post ) {
 	$terms = get_the_terms( $post->ID, 'product_cat' );
 
 	if ( ! empty( $terms ) ) {
-		$terms           = wp_list_sort(
+		$terms = wp_list_sort(
 			$terms,
 			array(
 				'parent'  => 'DESC',
 				'term_id' => 'ASC',
 			)
 		);
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$category_object = apply_filters( 'wc_product_post_type_link_product_cat', $terms[0], $terms, $post );
 		$product_cat     = $category_object->slug;
 
@@ -239,6 +264,11 @@ function wc_product_post_type_link( $permalink, $post ) {
 			$ancestors = get_ancestors( $category_object->term_id, 'product_cat' );
 			foreach ( $ancestors as $ancestor ) {
 				$ancestor_object = get_term( $ancestor, 'product_cat' );
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				if ( apply_filters( 'woocommerce_product_post_type_link_parent_category_only', false ) ) {
 					$product_cat = $ancestor_object->slug;
 				} else {
@@ -303,6 +333,11 @@ function wc_placeholder_img_src( $size = 'woocommerce_thumbnail' ) {
 		}
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_placeholder_img_src', $src );
 }
 
@@ -345,6 +380,11 @@ function wc_placeholder_img( $size = 'woocommerce_thumbnail', $attr = '' ) {
 		$image_html = '<img src="' . esc_url( $image ) . '" ' . $hwstring . implode( ' ', $attribute ) . '/>';
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_placeholder_img', $image_html, $size, $dimensions );
 }
 
@@ -439,6 +479,11 @@ function wc_scheduled_sales() {
 	// Sales which are due to start.
 	$product_ids = $data_store->get_starting_sales();
 	if ( $product_ids ) {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'wc_before_products_starting_sales', $product_ids );
 		foreach ( $product_ids as $product_id ) {
 			$product = wc_get_product( $product_id );
@@ -457,6 +502,11 @@ function wc_scheduled_sales() {
 				$product->save();
 			}
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'wc_after_products_starting_sales', $product_ids );
 
 		WC_Cache_Helper::get_transient_version( 'product', true );
@@ -466,6 +516,11 @@ function wc_scheduled_sales() {
 	// Sales which are due to end.
 	$product_ids = $data_store->get_ending_sales();
 	if ( $product_ids ) {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'wc_before_products_ending_sales', $product_ids );
 		foreach ( $product_ids as $product_id ) {
 			$product = wc_get_product( $product_id );
@@ -479,6 +534,11 @@ function wc_scheduled_sales() {
 				$product->save();
 			}
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'wc_after_products_ending_sales', $product_ids );
 
 		WC_Cache_Helper::get_transient_version( 'product', true );
@@ -594,6 +654,11 @@ add_action( 'template_redirect', 'wc_track_product_view', 20 );
  * @return array
  */
 function wc_get_product_types() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return (array) apply_filters(
 		'product_type_selector',
 		array(
@@ -617,6 +682,11 @@ function wc_product_has_unique_sku( $product_id, $sku ) {
 	$data_store = WC_Data_Store::load( 'product' );
 	$sku_found  = $data_store->is_existing_sku( $product_id, $sku );
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	if ( apply_filters( 'wc_product_has_unique_sku', $sku_found, $product_id, $sku ) ) {
 		return false;
 	}
@@ -798,7 +868,12 @@ function wc_get_product_attachment_props( $attachment_id = null, $product = fals
 		$props['full_src_h'] = $src[2];
 
 		// Gallery thumbnail.
-		$gallery_thumbnail                = wc_get_image_size( 'gallery_thumbnail' );
+		$gallery_thumbnail = wc_get_image_size( 'gallery_thumbnail' );
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$gallery_thumbnail_size           = apply_filters( 'woocommerce_gallery_thumbnail_size', array( $gallery_thumbnail['width'], $gallery_thumbnail['height'] ) );
 		$src                              = wp_get_attachment_image_src( $attachment_id, $gallery_thumbnail_size );
 		$props['gallery_thumbnail_src']   = $src[0];
@@ -831,6 +906,11 @@ function wc_get_product_attachment_props( $attachment_id = null, $product = fals
  * @return array
  */
 function wc_get_product_visibility_options() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters(
 		'woocommerce_product_visibility_options',
 		array(
@@ -868,6 +948,11 @@ function wc_get_product_tax_class_options() {
  * @return array
  */
 function wc_get_product_stock_status_options() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters(
 		'woocommerce_product_stock_status_options',
 		array(
@@ -920,7 +1005,17 @@ function wc_get_related_products( $product_id, $limit = 5, $exclude_ids = array(
 	// We want to query related posts if they are not cached, or we don't have enough.
 	if ( false === $related_posts || count( $related_posts ) < $limit ) {
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$cats_array = apply_filters( 'woocommerce_product_related_posts_relate_by_category', true, $product_id ) ? apply_filters( 'woocommerce_get_related_product_cat_terms', wc_get_product_term_ids( $product_id, 'product_cat' ), $product_id ) : array();
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$tags_array = apply_filters( 'woocommerce_product_related_posts_relate_by_tag', true, $product_id ) ? apply_filters( 'woocommerce_get_related_product_tag_terms', wc_get_product_term_ids( $product_id, 'product_tag' ), $product_id ) : array();
 
 		// Don't bother if none are set, unless woocommerce_product_related_posts_force_display is set to true in which case all products are related.
@@ -940,6 +1035,11 @@ function wc_get_related_products( $product_id, $limit = 5, $exclude_ids = array(
 		set_transient( $transient_name, $transient, DAY_IN_SECONDS );
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	$related_posts = apply_filters(
 		'woocommerce_related_products',
 		$related_posts,
@@ -950,6 +1050,11 @@ function wc_get_related_products( $product_id, $limit = 5, $exclude_ids = array(
 		)
 	);
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	if ( apply_filters( 'woocommerce_product_related_posts_shuffle', true ) ) {
 		shuffle( $related_posts );
 	}
@@ -1051,6 +1156,11 @@ function wc_get_price_including_tax( $product, $args = array() ) {
 			}
 		}
 	}
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_get_price_including_tax', $return_price, $qty, $product );
 }
 
@@ -1085,6 +1195,11 @@ function wc_get_price_excluding_tax( $product, $args = array() ) {
 	if ( $product->is_taxable() && wc_prices_include_tax() ) {
 		$order       = ArrayUtil::get_value_or_default( $args, 'order' );
 		$customer_id = $order ? $order->get_customer_id() : 0;
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ) {
 			$tax_rates = WC_Tax::get_base_tax_rates( $product->get_tax_class( 'unfiltered' ) );
 		} else {
@@ -1097,6 +1212,11 @@ function wc_get_price_excluding_tax( $product, $args = array() ) {
 		$return_price = $line_price;
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_get_price_excluding_tax', $return_price, $qty, $product );
 }
 

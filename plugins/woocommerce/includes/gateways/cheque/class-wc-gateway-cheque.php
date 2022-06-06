@@ -25,7 +25,12 @@ class WC_Gateway_Cheque extends WC_Payment_Gateway {
 	 * Constructor for the gateway.
 	 */
 	public function __construct() {
-		$this->id                 = 'cheque';
+		$this->id = 'cheque';
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$this->icon               = apply_filters( 'woocommerce_cheque_icon', '' );
 		$this->has_fields         = false;
 		$this->method_title       = _x( 'Check payments', 'Check payment method', 'woocommerce' );

@@ -162,6 +162,11 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 				),
 			);
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_shipping_settings', $settings );
 	}
 

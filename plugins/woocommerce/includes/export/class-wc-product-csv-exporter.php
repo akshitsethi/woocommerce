@@ -99,6 +99,11 @@ class WC_Product_CSV_Exporter extends WC_CSV_Batch_Exporter {
 	 * @return array
 	 */
 	public function get_default_column_names() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters(
 			"woocommerce_product_export_{$this->export_type}_default_columns",
 			array(
@@ -170,6 +175,11 @@ class WC_Product_CSV_Exporter extends WC_CSV_Batch_Exporter {
 		if ( ! empty( $this->product_category_to_export ) ) {
 			$args['category'] = $this->product_category_to_export;
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$products = wc_get_products( apply_filters( "woocommerce_product_export_{$this->export_type}_query_args", $args ) );
 
 		$this->total_rows  = $products->total;
@@ -250,6 +260,11 @@ class WC_Product_CSV_Exporter extends WC_CSV_Batch_Exporter {
 		$this->prepare_downloads_for_export( $product, $row );
 		$this->prepare_attributes_for_export( $product, $row );
 		$this->prepare_meta_for_export( $product, $row );
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_product_export_row_data', $row, $product );
 	}
 
@@ -706,6 +721,11 @@ class WC_Product_CSV_Exporter extends WC_CSV_Batch_Exporter {
 			$meta_data = $product->get_meta_data();
 
 			if ( count( $meta_data ) ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$meta_keys_to_skip = apply_filters( 'woocommerce_product_export_skip_meta_keys', array(), $product );
 
 				$i = 1;

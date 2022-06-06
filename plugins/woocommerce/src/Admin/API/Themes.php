@@ -199,6 +199,11 @@ class Themes extends \WC_REST_Data_Controller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_rest_themes_collection_params', $params );
 	}
 }

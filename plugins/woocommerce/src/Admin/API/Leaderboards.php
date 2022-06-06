@@ -78,6 +78,11 @@ class Leaderboards extends \WC_REST_Data_Controller {
 	protected function get_coupons_leaderboard( $per_page, $after, $before, $persisted_query ) {
 		$coupons_data_store = new CouponsDataStore();
 		$coupons_data       = $per_page > 0 ? $coupons_data_store->get_data(
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			apply_filters(
 				'woocommerce_analytics_coupons_query_args',
 				array(
@@ -147,6 +152,11 @@ class Leaderboards extends \WC_REST_Data_Controller {
 	protected function get_categories_leaderboard( $per_page, $after, $before, $persisted_query ) {
 		$categories_data_store = new CategoriesDataStore();
 		$categories_data       = $per_page > 0 ? $categories_data_store->get_data(
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			apply_filters(
 				'woocommerce_analytics_categories_query_args',
 				array(
@@ -216,6 +226,11 @@ class Leaderboards extends \WC_REST_Data_Controller {
 	protected function get_customers_leaderboard( $per_page, $after, $before, $persisted_query ) {
 		$customers_data_store = new CustomersDataStore();
 		$customers_data       = $per_page > 0 ? $customers_data_store->get_data(
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			apply_filters(
 				'woocommerce_analytics_customers_query_args',
 				array(
@@ -283,6 +298,11 @@ class Leaderboards extends \WC_REST_Data_Controller {
 	protected function get_products_leaderboard( $per_page, $after, $before, $persisted_query ) {
 		$products_data_store = new ProductsDataStore();
 		$products_data       = $per_page > 0 ? $products_data_store->get_data(
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			apply_filters(
 				'woocommerce_analytics_products_query_args',
 				array(
@@ -358,6 +378,11 @@ class Leaderboards extends \WC_REST_Data_Controller {
 			$this->get_products_leaderboard( $per_page, $after, $before, $persisted_query ),
 		);
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_leaderboards', $leaderboards, $per_page, $after, $before, $persisted_query );
 	}
 

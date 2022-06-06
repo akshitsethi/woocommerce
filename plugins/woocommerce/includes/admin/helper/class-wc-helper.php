@@ -46,6 +46,11 @@ class WC_Helper {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_helper_loaded' );
 	}
 
@@ -1511,6 +1516,11 @@ class WC_Helper {
 	 * Various Helper-related admin notices.
 	 */
 	public static function admin_notices() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( apply_filters( 'woocommerce_helper_suppress_admin_notices', false ) ) {
 			return;
 		}

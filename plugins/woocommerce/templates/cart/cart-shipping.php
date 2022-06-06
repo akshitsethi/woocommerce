@@ -51,6 +51,11 @@ $calculator_text          = '';
 						printf( esc_html__( 'Shipping to %s.', 'woocommerce' ) . ' ', '<strong>' . esc_html( $formatted_destination ) . '</strong>' );
 						$calculator_text = esc_html__( 'Change address', 'woocommerce' );
 					} else {
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						echo wp_kses_post( apply_filters( 'woocommerce_shipping_estimate_html', __( 'Shipping options will be updated during checkout.', 'woocommerce' ) ) );
 					}
 					?>
@@ -59,11 +64,26 @@ $calculator_text          = '';
 			<?php
 		elseif ( ! $has_calculated_shipping || ! $formatted_destination ) :
 			if ( is_cart() && 'no' === get_option( 'woocommerce_enable_shipping_calc' ) ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				echo wp_kses_post( apply_filters( 'woocommerce_shipping_not_enabled_on_cart_html', __( 'Shipping costs are calculated during checkout.', 'woocommerce' ) ) );
 			} else {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				echo wp_kses_post( apply_filters( 'woocommerce_shipping_may_be_available_html', __( 'Enter your address to view shipping options.', 'woocommerce' ) ) );
 			}
 		elseif ( ! is_cart() ) :
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			echo wp_kses_post( apply_filters( 'woocommerce_no_shipping_available_html', __( 'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.', 'woocommerce' ) ) );
 		else :
 			// Translators: $s shipping destination.

@@ -207,6 +207,11 @@ class WC_Customer extends WC_Legacy_Customer {
 			$city     = $this->get_shipping_city();
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_customer_taxable_address', array( $country, $state, $postcode, $city ) );
 	}
 
@@ -220,6 +225,11 @@ class WC_Customer extends WC_Legacy_Customer {
 		if ( $this->get_id() ) {
 			$downloads = wc_get_customer_available_downloads( $this->get_id() );
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_customer_get_downloadable_products', $downloads );
 	}
 
@@ -455,6 +465,11 @@ class WC_Customer extends WC_Legacy_Customer {
 			$value = isset( $this->changes[ $address ][ $prop ] ) ? $this->changes[ $address ][ $prop ] : $this->data[ $address ][ $prop ];
 
 			if ( 'view' === $context ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$value = apply_filters( $this->get_hook_prefix() . $address . '_' . $prop, $value, $this );
 			}
 		}
@@ -477,6 +492,11 @@ class WC_Customer extends WC_Legacy_Customer {
 			$value   = array_merge( $this->data[ $prop ], $changes );
 
 			if ( 'view' === $context ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$value = apply_filters( $this->get_hook_prefix() . $prop, $value, $this );
 			}
 		}
@@ -620,6 +640,11 @@ class WC_Customer extends WC_Legacy_Customer {
 			$value   = array_merge( $this->data[ $prop ], $changes );
 
 			if ( 'view' === $context ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$value = apply_filters( $this->get_hook_prefix() . $prop, $value, $this );
 			}
 		}

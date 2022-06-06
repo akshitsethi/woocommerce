@@ -228,6 +228,11 @@ class WC_REST_System_Status_Tools_V2_Controller extends WC_REST_Controller {
 			unset( $tools['clear_template_cache'] );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_debug_tools', $tools );
 	}
 

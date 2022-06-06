@@ -208,6 +208,11 @@ function wc_attribute_label( $name, $product = '' ) {
 		$label = $name;
 	}
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_attribute_label', $label, $name, $product );
 }
 
@@ -222,6 +227,11 @@ function wc_attribute_orderby( $name ) {
 	$id         = wc_attribute_taxonomy_id_by_name( $name );
 	$taxonomies = wc_get_attribute_taxonomies();
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_attribute_orderby', isset( $taxonomies[ 'id:' . $id ] ) ? $taxonomies[ 'id:' . $id ]->attribute_orderby : 'menu_order', $name );
 }
 
@@ -248,6 +258,11 @@ function wc_get_attribute_taxonomy_names() {
  * @return array
  */
 function wc_get_attribute_types() {
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return (array) apply_filters(
 		'product_attributes_type_selector',
 		array(
@@ -403,6 +418,11 @@ function wc_attributes_array_filter_variation( $attribute ) {
  */
 function wc_is_attribute_in_product_name( $attribute, $name ) {
 	$is_in_name = stristr( $name, ' ' . $attribute . ',' ) || 0 === stripos( strrev( $name ), strrev( ' ' . $attribute ) );
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	return apply_filters( 'woocommerce_is_attribute_in_product_name', $is_in_name, $attribute, $name );
 }
 

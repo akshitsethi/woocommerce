@@ -33,7 +33,12 @@ class WC_Gateway_BACS extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 
-		$this->id                 = 'bacs';
+		$this->id = 'bacs';
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$this->icon               = apply_filters( 'woocommerce_bacs_icon', '' );
 		$this->has_fields         = false;
 		$this->method_title       = __( 'Direct bank transfer', 'woocommerce' );
@@ -233,6 +238,11 @@ class WC_Gateway_BACS extends WC_Payment_Gateway {
 		}
 		// phpcs:enable
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_update_option', array( 'id' => 'woocommerce_bacs_accounts' ) );
 		update_option( 'woocommerce_bacs_accounts', $accounts );
 	}
@@ -290,6 +300,11 @@ class WC_Gateway_BACS extends WC_Payment_Gateway {
 		// Get sortcode label in the $locale array and use appropriate one.
 		$sortcode = isset( $locale[ $country ]['sortcode']['label'] ) ? $locale[ $country ]['sortcode']['label'] : __( 'Sort code', 'woocommerce' );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$bacs_accounts = apply_filters( 'woocommerce_bacs_accounts', $this->account_details, $order_id );
 
 		if ( ! empty( $bacs_accounts ) ) {

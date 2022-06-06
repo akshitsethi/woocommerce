@@ -39,6 +39,11 @@ class WC_Product_Grouped extends WC_Product {
 	 * @return string
 	 */
 	public function add_to_cart_text() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_product_add_to_cart_text', __( 'View products', 'woocommerce' ), $this );
 	}
 
@@ -70,6 +75,11 @@ class WC_Product_Grouped extends WC_Product {
 			}
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return 'view' === $context ? apply_filters( 'woocommerce_product_is_on_sale', $on_sale, $this ) : $on_sale;
 	}
 
@@ -79,6 +89,11 @@ class WC_Product_Grouped extends WC_Product {
 	 * @return bool
 	 */
 	public function is_purchasable() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_is_purchasable', false, $this );
 	}
 
@@ -117,14 +132,34 @@ class WC_Product_Grouped extends WC_Product {
 			$is_free = 0 === $min_price && 0 === $max_price;
 
 			if ( $is_free ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$price = apply_filters( 'woocommerce_grouped_free_price_html', __( 'Free!', 'woocommerce' ), $this );
 			} else {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$price = apply_filters( 'woocommerce_grouped_price_html', $price . $this->get_price_suffix(), $this, $child_prices );
 			}
 		} else {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$price = apply_filters( 'woocommerce_grouped_empty_price_html', '', $this );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_price_html', $price, $this );
 	}
 

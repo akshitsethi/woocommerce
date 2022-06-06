@@ -37,6 +37,11 @@ class WC_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( apply_filters( 'woocommerce_show_addons_page', true ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
 		}
@@ -120,6 +125,11 @@ class WC_Admin_Menus {
 			WC_Admin_Settings::add_message( wp_kses_post( wp_unslash( $_GET['wc_message'] ) ) ); // WPCS: input var okay, CSRF ok.
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_settings_page_init' );
 	}
 
@@ -146,6 +156,11 @@ class WC_Admin_Menus {
 		// Save settings if data has been posted.
 		if ( '' !== $current_section && apply_filters( "woocommerce_save_settings_{$current_tab}_{$current_section}", ! empty( $_POST['save'] ) ) ) { // WPCS: input var okay, CSRF ok.
 			WC_Admin_Settings::save();
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 		} elseif ( '' === $current_section && apply_filters( "woocommerce_save_settings_{$current_tab}", ! empty( $_POST['save'] ) ) ) { // WPCS: input var okay, CSRF ok.
 			WC_Admin_Settings::save();
 		}
@@ -201,6 +216,11 @@ class WC_Admin_Menus {
 
 			// Add count if user has access.
 			if ( apply_filters( 'woocommerce_include_processing_order_count_in_menu', true ) && current_user_can( 'edit_others_shop_orders' ) ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$order_count = apply_filters( 'woocommerce_menu_order_count', wc_processing_order_count() );
 
 				if ( $order_count ) {
@@ -374,6 +394,11 @@ class WC_Admin_Menus {
 		// Include missing lost password.
 		$endpoints['lost-password'] = __( 'Lost password', 'woocommerce' );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$endpoints = apply_filters( 'woocommerce_custom_nav_menu_items', $endpoints );
 
 		?>

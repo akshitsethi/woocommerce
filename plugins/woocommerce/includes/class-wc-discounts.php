@@ -152,6 +152,11 @@ class WC_Discounts {
 	 * @return object[]
 	 */
 	public function get_items_to_validate() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_coupon_get_items_to_validate', $this->get_items(), $this );
 	}
 
@@ -364,7 +369,12 @@ class WC_Discounts {
 			$price_to_discount = ( 'yes' === get_option( 'woocommerce_calc_discounts_sequentially', 'no' ) ) ? $discounted_price : NumberUtil::round( $item->price );
 
 			// See how many and what price to apply to.
-			$apply_quantity    = $limit_usage_qty && ( $limit_usage_qty - $applied_count ) < $item->quantity ? $limit_usage_qty - $applied_count : $item->quantity;
+			$apply_quantity = $limit_usage_qty && ( $limit_usage_qty - $applied_count ) < $item->quantity ? $limit_usage_qty - $applied_count : $item->quantity;
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$apply_quantity    = max( 0, apply_filters( 'woocommerce_coupon_get_apply_quantity', $apply_quantity, $item, $coupon, $this ) );
 			$price_to_discount = ( $price_to_discount / $item->quantity ) * $apply_quantity;
 
@@ -429,9 +439,19 @@ class WC_Discounts {
 			// Run coupon calculations.
 			if ( $limit_usage_qty ) {
 				$apply_quantity = $limit_usage_qty - $applied_count < $item->quantity ? $limit_usage_qty - $applied_count : $item->quantity;
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$apply_quantity = max( 0, apply_filters( 'woocommerce_coupon_get_apply_quantity', $apply_quantity, $item, $coupon, $this ) );
 				$discount       = min( $amount, $item->price / $item->quantity ) * $apply_quantity;
 			} else {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$apply_quantity = apply_filters( 'woocommerce_coupon_get_apply_quantity', $item->quantity, $item, $coupon, $this );
 				$discount       = $amount * $apply_quantity;
 			}
@@ -518,6 +538,11 @@ class WC_Discounts {
 
 			// See how many and what price to apply to.
 			$apply_quantity = $limit_usage_qty && ( $limit_usage_qty - $applied_count ) < $item->quantity ? $limit_usage_qty - $applied_count : $item->quantity;
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$apply_quantity = max( 0, apply_filters( 'woocommerce_coupon_get_apply_quantity', $apply_quantity, $item, $coupon, $this ) );
 
 			// Run coupon calculations.
@@ -656,6 +681,11 @@ class WC_Discounts {
 			}
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( $coupon && $user_id && apply_filters( 'woocommerce_coupon_validate_user_usage_limit', $coupon->get_usage_limit_per_user() > 0, $user_id, $coupon, $this ) && $coupon->get_id() && $coupon->get_data_store() ) {
 			$data_store  = $coupon->get_data_store();
 			$usage_count = $data_store->get_usage_by_user_id( $coupon, $user_id );
@@ -683,6 +713,11 @@ class WC_Discounts {
 	 * @return bool
 	 */
 	protected function validate_coupon_expiry_date( $coupon ) {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( $coupon->get_date_expires() && apply_filters( 'woocommerce_coupon_validate_expiry_date', time() > $coupon->get_date_expires()->getTimestamp(), $coupon, $this ) ) {
 			throw new Exception( __( 'This coupon has expired.', 'woocommerce' ), 107 );
 		}
@@ -701,6 +736,11 @@ class WC_Discounts {
 	protected function validate_coupon_minimum_amount( $coupon ) {
 		$subtotal = wc_remove_number_precision( $this->get_object_subtotal() );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( $coupon->get_minimum_amount() > 0 && apply_filters( 'woocommerce_coupon_validate_minimum_amount', $coupon->get_minimum_amount() > $subtotal, $coupon, $subtotal ) ) {
 			/* translators: %s: coupon minimum amount */
 			throw new Exception( sprintf( __( 'The minimum spend for this coupon is %s.', 'woocommerce' ), wc_price( $coupon->get_minimum_amount() ) ), 108 );
@@ -720,6 +760,11 @@ class WC_Discounts {
 	protected function validate_coupon_maximum_amount( $coupon ) {
 		$subtotal = wc_remove_number_precision( $this->get_object_subtotal() );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( $coupon->get_maximum_amount() > 0 && apply_filters( 'woocommerce_coupon_validate_maximum_amount', $coupon->get_maximum_amount() < $subtotal, $coupon ) ) {
 			/* translators: %s: coupon maximum amount */
 			throw new Exception( sprintf( __( 'The maximum spend for this coupon is %s.', 'woocommerce' ), wc_price( $coupon->get_maximum_amount() ) ), 112 );
@@ -995,6 +1040,11 @@ class WC_Discounts {
 			$this->validate_coupon_excluded_items( $coupon );
 			$this->validate_coupon_eligible_items( $coupon );
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			if ( ! apply_filters( 'woocommerce_coupon_is_valid', true, $coupon, $this ) ) {
 				throw new Exception( __( 'Coupon is not valid.', 'woocommerce' ), 100 );
 			}

@@ -57,6 +57,11 @@ class WC_Product_Variable extends WC_Product {
 	 * @return string
 	 */
 	public function add_to_cart_text() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_product_add_to_cart_text', $this->is_purchasable() ? __( 'Select options', 'woocommerce' ) : __( 'Read more', 'woocommerce' ), $this );
 	}
 
@@ -98,6 +103,11 @@ class WC_Product_Variable extends WC_Product {
 		$prices = $this->get_variation_prices( $for_display );
 		$price  = 'min' === $min_or_max ? current( $prices['regular_price'] ) : end( $prices['regular_price'] );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_variation_regular_price', $price, $this, $min_or_max, $for_display );
 	}
 
@@ -112,6 +122,11 @@ class WC_Product_Variable extends WC_Product {
 		$prices = $this->get_variation_prices( $for_display );
 		$price  = 'min' === $min_or_max ? current( $prices['sale_price'] ) : end( $prices['sale_price'] );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_variation_sale_price', $price, $this, $min_or_max, $for_display );
 	}
 
@@ -126,6 +141,11 @@ class WC_Product_Variable extends WC_Product {
 		$prices = $this->get_variation_prices( $for_display );
 		$price  = 'min' === $min_or_max ? current( $prices['price'] ) : end( $prices['price'] );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_variation_price', $price, $this, $min_or_max, $for_display );
 	}
 
@@ -149,6 +169,11 @@ class WC_Product_Variable extends WC_Product {
 		$prices = $this->get_variation_prices( true );
 
 		if ( empty( $prices['price'] ) ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$price = apply_filters( 'woocommerce_variable_empty_price_html', '', $this );
 		} else {
 			$min_price     = current( $prices['price'] );
@@ -164,9 +189,19 @@ class WC_Product_Variable extends WC_Product {
 				$price = wc_price( $min_price );
 			}
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$price = apply_filters( 'woocommerce_variable_price_html', $price . $this->get_price_suffix(), $this );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_price_html', $price, $this );
 	}
 
@@ -185,6 +220,11 @@ class WC_Product_Variable extends WC_Product {
 		$suffix = get_option( 'woocommerce_price_display_suffix' );
 
 		if ( strstr( $suffix, '{' ) ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			return apply_filters( 'woocommerce_get_price_suffix', '', $this, $price, $qty );
 		} else {
 			return parent::get_price_suffix( $price, $qty );
@@ -212,6 +252,11 @@ class WC_Product_Variable extends WC_Product {
 			$this->set_visible_children( $children['visible'] );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_children', $this->children, $this, false );
 	}
 
@@ -229,6 +274,11 @@ class WC_Product_Variable extends WC_Product {
 			$this->set_children( $children['all'] );
 			$this->set_visible_children( $children['visible'] );
 		}
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_get_children', $this->visible_children, $this, true );
 	}
 
@@ -360,6 +410,11 @@ class WC_Product_Variable extends WC_Product {
 		// See if prices should be shown for each variation after selection.
 		$show_variation_price = apply_filters( 'woocommerce_show_variation_price', $variation->get_price() === '' || $this->get_variation_sale_price( 'min' ) !== $this->get_variation_sale_price( 'max' ) || $this->get_variation_regular_price( 'min' ) !== $this->get_variation_regular_price( 'max' ), $this, $variation );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters(
 			'woocommerce_available_variation',
 			array(
@@ -492,6 +547,11 @@ class WC_Product_Variable extends WC_Product {
 		$prices  = $this->get_variation_prices();
 		$on_sale = $prices['regular_price'] !== $prices['sale_price'] && $prices['sale_price'] === $prices['price'];
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return 'view' === $context ? apply_filters( 'woocommerce_product_is_on_sale', $on_sale, $this ) : $on_sale;
 	}
 
@@ -574,6 +634,11 @@ class WC_Product_Variable extends WC_Product {
 	 * @return boolean
 	 */
 	public function has_options() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_product_has_options', true, $this );
 	}
 
@@ -602,6 +667,11 @@ class WC_Product_Variable extends WC_Product {
 			$data_store->sync_stock_status( $product );
 			self::sync_attributes( $product ); // Legacy update of attributes.
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_variable_product_sync_data', $product );
 
 			if ( $save ) {

@@ -228,6 +228,11 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 					continue;
 				}
 
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$extended_attributes = apply_filters( 'woocommerce_rest_reports_products_extended_attributes', $this->extended_attributes, $product_data );
 				foreach ( $extended_attributes as $extended_attribute ) {
 					if ( 'variations' === $extended_attribute ) {

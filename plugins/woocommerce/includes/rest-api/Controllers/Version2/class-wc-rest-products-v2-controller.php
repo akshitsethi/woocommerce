@@ -686,6 +686,11 @@ class WC_REST_Products_V2_Controller extends WC_REST_CRUD_Controller {
 					$base_data['description'] = 'view' === $context ? wpautop( do_shortcode( $product->get_description() ) ) : $product->get_description( $context );
 					break;
 				case 'short_description':
+					/**
+					 * Hook
+					 *
+					 * @since
+					 */
 					$base_data['short_description'] = 'view' === $context ? apply_filters( 'woocommerce_short_description', $product->get_short_description() ) : $product->get_short_description( $context );
 					break;
 				case 'sku':
@@ -1284,6 +1289,11 @@ class WC_REST_Products_V2_Controller extends WC_REST_CRUD_Controller {
 					$upload = wc_rest_upload_image_from_url( esc_url_raw( $image['src'] ) );
 
 					if ( is_wp_error( $upload ) ) {
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						if ( ! apply_filters( 'woocommerce_rest_suppress_image_upload_error', false, $upload, $product->get_id(), $images ) ) {
 							throw new WC_REST_Exception( 'woocommerce_product_image_upload_error', $upload->get_error_message(), 400 );
 						} else {
@@ -1411,6 +1421,11 @@ class WC_REST_Products_V2_Controller extends WC_REST_CRUD_Controller {
 			$download = new WC_Product_Download();
 			$download->set_id( ! empty( $file['id'] ) ? $file['id'] : wp_generate_uuid4() );
 			$download->set_name( $file['name'] ? $file['name'] : wc_get_filename_from_url( $file['file'] ) );
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$download->set_file( apply_filters( 'woocommerce_file_download_path', $file['file'], $product, $key ) );
 			$files[] = $download;
 		}

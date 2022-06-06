@@ -312,6 +312,11 @@ final class WC_Cart_Totals {
 				}
 			}
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$fee->taxes     = apply_filters( 'woocommerce_cart_totals_get_fees_from_cart_taxes', $fee->taxes, $fee, $this );
 			$fee->total_tax = array_sum( array_map( array( $this, 'round_line_tax' ), $fee->taxes ) );
 
@@ -417,6 +422,11 @@ final class WC_Cart_Totals {
 	 */
 	protected function remove_item_base_taxes( $item ) {
 		if ( $item->price_includes_tax && $item->taxable ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			if ( apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ) {
 				$base_tax_rates = WC_Tax::get_base_tax_rates( $item->product->get_tax_class( 'unfiltered' ) );
 			} else {
@@ -665,11 +675,21 @@ final class WC_Cart_Totals {
 				 * $this->cart is the cart object.
 				 */
 				$item->total = wc_add_number_precision(
+					/**
+					 * Hook
+					 *
+					 * @since
+					 */
 					apply_filters( 'woocommerce_get_discounted_price', wc_remove_number_precision( $item->total ), $item->object, $this->cart )
 				);
 			}
 
 			if ( $this->calculate_tax && $item->product->is_taxable() ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$total_taxes     = apply_filters( 'woocommerce_calculate_item_totals_taxes', WC_Tax::calc_tax( $item->total, $item->tax_rates, $item->price_includes_tax ), $item, $this );
 				$item->taxes     = $total_taxes;
 				$item->total_tax = array_sum( array_map( array( $this, 'round_line_tax' ), $item->taxes ) );
@@ -712,6 +732,11 @@ final class WC_Cart_Totals {
 	protected function calculate_item_subtotals() {
 		$merged_subtotal_taxes = array(); // Taxes indexed by tax rate ID for storage later.
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$adjust_non_base_location_prices = apply_filters( 'woocommerce_adjust_non_base_location_prices', true );
 		$is_customer_vat_exempt          = $this->cart->get_customer()->get_is_vat_exempt();
 
@@ -870,6 +895,11 @@ final class WC_Cart_Totals {
 
 		// Allow plugins to hook and alter totals before final total is calculated.
 		if ( has_action( 'woocommerce_calculate_totals' ) ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_calculate_totals', $this->cart );
 		}
 

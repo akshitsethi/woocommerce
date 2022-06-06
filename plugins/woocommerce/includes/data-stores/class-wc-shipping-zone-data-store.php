@@ -143,6 +143,11 @@ class WC_Shipping_Zone_Data_Store extends WC_Data_Store_WP implements WC_Shippin
 			WC_Cache_Helper::invalidate_cache_group( 'shipping_zones' );
 			WC_Cache_Helper::get_transient_version( 'shipping', true );
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_delete_shipping_zone', $zone_id );
 		}
 	}
@@ -225,6 +230,11 @@ class WC_Shipping_Zone_Data_Store extends WC_Data_Store_WP implements WC_Shippin
 
 		$wpdb->delete( $wpdb->prefix . 'woocommerce_shipping_zone_methods', array( 'instance_id' => $instance_id ) );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_delete_shipping_zone_method', $instance_id );
 	}
 

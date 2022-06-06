@@ -1459,6 +1459,11 @@ class WC_Tests_Cart extends WC_Unit_Test_Case {
 		$product = WC_Helper_Product::create_simple_product();
 		WC()->cart->add_to_cart( $product->get_id(), 1 );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$this->assertEquals( apply_filters( 'woocommerce_cart_total', wc_price( WC()->cart->total ) ), WC()->cart->get_total() );
 	}
 
@@ -1524,6 +1529,11 @@ class WC_Tests_Cart extends WC_Unit_Test_Case {
 			$needs_shipping_address = true;
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$this->assertEquals( apply_filters( 'woocommerce_cart_needs_shipping_address', $needs_shipping_address ), WC()->cart->needs_shipping_address() );
 	}
 
@@ -1597,7 +1607,7 @@ class WC_Tests_Cart extends WC_Unit_Test_Case {
 		$this->assertEquals( 67.18, WC()->cart->get_taxes_total() );
 
 		$checkout = WC_Checkout::instance();
-		$order = new WC_Order();
+		$order    = new WC_Order();
 		$checkout->set_data_from_cart( $order );
 		$this->assertEquals( 67.18, $order->get_total_tax() );
 		$this->assertEquals( 335.88, $order->get_total() );

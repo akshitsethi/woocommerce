@@ -121,6 +121,11 @@ class WC_Download_Handler {
 		self::check_download_expiry( $download );
 		self::check_download_login_required( $download );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action(
 			'woocommerce_download_product',
 			$download->get_user_email(),
@@ -226,6 +231,11 @@ class WC_Download_Handler {
 			$filename = current( explode( '?', $filename ) );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$filename = apply_filters( 'woocommerce_file_download_filename', $filename, $product_id );
 
 		/**
@@ -273,11 +283,11 @@ class WC_Download_Handler {
 		 * via filters we can still do the string replacement on a HTTP file.
 		 */
 		$replacements = array(
-			$wp_uploads_url                                                   => $wp_uploads_dir,
-			network_site_url( '/', 'https' )                                  => ABSPATH,
+			$wp_uploads_url                  => $wp_uploads_dir,
+			network_site_url( '/', 'https' ) => ABSPATH,
 			str_replace( 'https:', 'http:', network_site_url( '/', 'http' ) ) => ABSPATH,
-			site_url( '/', 'https' )                                          => ABSPATH,
-			str_replace( 'https:', 'http:', site_url( '/', 'http' ) )         => ABSPATH,
+			site_url( '/', 'https' )         => ABSPATH,
+			str_replace( 'https:', 'http:', site_url( '/', 'http' ) ) => ABSPATH,
 		);
 
 		$count            = 0;
@@ -297,6 +307,11 @@ class WC_Download_Handler {
 			 */
 			return array(
 				'remote_file' => true,
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				'file_path'   => apply_filters( 'woocommerce_download_parse_remote_file_path', $file_path ),
 			);
 		}
@@ -325,6 +340,11 @@ class WC_Download_Handler {
 		*/
 		return array(
 			'remote_file' => $remote_file,
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			'file_path'   => apply_filters( 'woocommerce_download_parse_file_path', $file_path, $remote_file ),
 		);
 	}
@@ -344,23 +364,43 @@ class WC_Download_Handler {
 		 * 2. Force download method is more secure than redirect method if `allow_url_fopen` is enabled in `php.ini`.
 		 */
 		if ( $parsed_file_path['remote_file'] && ! apply_filters( 'woocommerce_use_xsendfile_for_remote', false ) ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( 'woocommerce_download_file_force', $file_path, $filename );
 			return;
 		}
 
 		if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_xsendfile', apache_get_modules(), true ) ) {
 			self::download_headers( $parsed_file_path['file_path'], $filename );
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$filepath = apply_filters( 'woocommerce_download_file_xsendfile_file_path', $parsed_file_path['file_path'], $file_path, $filename, $parsed_file_path );
 			header( 'X-Sendfile: ' . $filepath );
 			exit;
 		} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
 			self::download_headers( $parsed_file_path['file_path'], $filename );
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$filepath = apply_filters( 'woocommerce_download_file_xsendfile_lighttpd_file_path', $parsed_file_path['file_path'], $file_path, $filename, $parsed_file_path );
 			header( 'X-Lighttpd-Sendfile: ' . $filepath );
 			exit;
 		} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) {
 			self::download_headers( $parsed_file_path['file_path'], $filename );
 			$xsendfile_path = trim( preg_replace( '`^' . str_replace( '\\', '/', getcwd() ) . '`', '', $parsed_file_path['file_path'] ), '/' );
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$xsendfile_path = apply_filters( 'woocommerce_download_file_xsendfile_x_accel_redirect_file_path', $xsendfile_path, $file_path, $filename, $parsed_file_path );
 			header( "X-Accel-Redirect: /$xsendfile_path" );
 			exit;

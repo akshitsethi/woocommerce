@@ -458,6 +458,11 @@ class ListTable extends WP_List_Table {
 				human_time_diff( $order->get_date_created()->getTimestamp(), time() )
 			);
 		} else {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$show_date = $order->get_date_created()->date_i18n( apply_filters( 'woocommerce_admin_order_date_format', __( 'M j, Y', 'woocommerce' ) ) );
 		}
 		printf(

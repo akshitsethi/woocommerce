@@ -286,7 +286,7 @@ class WC_REST_Products_Controller extends WC_REST_Products_V2_Controller {
 		global $wpdb;
 		if ( ! empty( $this->search_sku_in_product_lookup_table ) ) {
 			$like_search = '%' . $wpdb->esc_like( $this->search_sku_in_product_lookup_table ) . '%';
-			$where .= ' AND ' . $wpdb->prepare( '(wc_product_meta_lookup.sku LIKE %s)', $like_search );
+			$where      .= ' AND ' . $wpdb->prepare( '(wc_product_meta_lookup.sku LIKE %s)', $like_search );
 		}
 		return $where;
 	}
@@ -312,6 +312,11 @@ class WC_REST_Products_Controller extends WC_REST_Products_V2_Controller {
 					$upload = wc_rest_upload_image_from_url( esc_url_raw( $image['src'] ) );
 
 					if ( is_wp_error( $upload ) ) {
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						if ( ! apply_filters( 'woocommerce_rest_suppress_image_upload_error', false, $upload, $product->get_id(), $images ) ) {
 							throw new WC_REST_Exception( 'woocommerce_product_image_upload_error', $upload->get_error_message(), 400 );
 						} else {
@@ -1067,7 +1072,7 @@ class WC_REST_Products_Controller extends WC_REST_Products_V2_Controller {
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'low_stock_amount'       => array(
+				'low_stock_amount'      => array(
 					'description' => __( 'Low Stock amount for the product.', 'woocommerce' ),
 					'type'        => array( 'integer', 'null' ),
 					'context'     => array( 'view', 'edit' ),
@@ -1294,7 +1299,7 @@ class WC_REST_Products_Controller extends WC_REST_Products_V2_Controller {
 						),
 					),
 				),
-				'has_options'     => array(
+				'has_options'           => array(
 					'description' => __( 'Shows if the product needs to be configured before it can be bought.', 'woocommerce' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),

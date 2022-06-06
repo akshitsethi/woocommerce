@@ -307,7 +307,7 @@ class Loader {
 			$settings['orderStatuses'] = self::get_order_statuses( wc_get_order_statuses() );
 			$settings['stockStatuses'] = self::get_order_statuses( wc_get_product_stock_status_options() );
 			$settings['currency']      = self::get_currency_settings();
-			$settings['locale']        = [
+			$settings['locale']        = array(
 				'siteLocale'    => isset( $settings['siteLocale'] )
 					? $settings['siteLocale']
 					: get_locale(),
@@ -317,9 +317,14 @@ class Loader {
 				'weekdaysShort' => isset( $settings['l10n']['weekdaysShort'] )
 					? $settings['l10n']['weekdaysShort']
 					: array_values( $wp_locale->weekday_abbrev ),
-			];
+			);
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$preload_data_endpoints = apply_filters( 'woocommerce_component_settings_preload_endpoints', array() );
 		if ( class_exists( 'Jetpack' ) ) {
 			$preload_data_endpoints['jetpackStatus'] = '/jetpack/v4/connection';
@@ -331,6 +336,11 @@ class Loader {
 			);
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$preload_options = apply_filters( 'woocommerce_admin_preload_options', array() );
 		if ( ! empty( $preload_options ) ) {
 			foreach ( $preload_options as $option ) {
@@ -338,12 +348,17 @@ class Loader {
 			}
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$preload_settings = apply_filters( 'woocommerce_admin_preload_settings', array() );
 		if ( ! empty( $preload_settings ) ) {
 			$setting_options = new \WC_REST_Setting_Options_V2_Controller();
 			foreach ( $preload_settings as $group ) {
 				$group_settings   = $setting_options->get_group_settings( $group );
-				$preload_settings = [];
+				$preload_settings = array();
 				foreach ( $group_settings as $option ) {
 					if ( array_key_exists( 'id', $option ) && array_key_exists( 'value', $option ) ) {
 						$preload_settings[ $option['id'] ] = $option['value'];
@@ -390,7 +405,7 @@ class Loader {
 		if ( ! empty( $preload_data_endpoints ) ) {
 			$settings['dataEndpoints'] = isset( $settings['dataEndpoints'] )
 				? $settings['dataEndpoints']
-				: [];
+				: array();
 			foreach ( $preload_data_endpoints as $key => $endpoint ) {
 				// Handle error case: rest_do_request() doesn't guarantee success.
 				if ( empty( $preload_data[ $endpoint ] ) ) {
@@ -530,6 +545,11 @@ class Loader {
 	public static function get_currency_settings() {
 		$code = get_woocommerce_currency();
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters(
 			'wc_currency_settings',
 			array(

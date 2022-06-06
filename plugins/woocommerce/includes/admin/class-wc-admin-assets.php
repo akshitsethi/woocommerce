@@ -84,6 +84,11 @@ if ( ! class_exists( 'WC_Admin_Assets', false ) ) :
 
 			// @deprecated 2.3.
 			if ( has_action( 'woocommerce_admin_css' ) ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				do_action( 'woocommerce_admin_css' );
 				wc_deprecated_function( 'The woocommerce_admin_css action', '2.3', 'admin_enqueue_scripts' );
 			}
@@ -180,9 +185,9 @@ if ( ! class_exists( 'WC_Admin_Assets', false ) ) :
 				wp_enqueue_script( 'jquery-ui-sortable' );
 				wp_enqueue_script( 'jquery-ui-autocomplete' );
 
-				$locale  = localeconv();
+				$locale        = localeconv();
 				$decimal_point = isset( $locale['decimal_point'] ) ? $locale['decimal_point'] : '.';
-				$decimal = ( ! empty( wc_get_price_decimal_separator() ) ) ? wc_get_price_decimal_separator() : $decimal_point;
+				$decimal       = ( ! empty( wc_get_price_decimal_separator() ) ) ? wc_get_price_decimal_separator() : $decimal_point;
 
 				$params = array(
 					/* translators: %s: decimal */
@@ -269,6 +274,11 @@ if ( ! class_exists( 'WC_Admin_Assets', false ) ) :
 					'i18n_edited_variations'              => esc_js( __( 'Save changes before changing page?', 'woocommerce' ) ),
 					'i18n_variation_count_single'         => esc_js( __( '%qty% variation', 'woocommerce' ) ),
 					'i18n_variation_count_plural'         => esc_js( __( '%qty% variations', 'woocommerce' ) ),
+					/**
+					 * Hook
+					 *
+					 * @since
+					 */
 					'variations_per_page'                 => absint( apply_filters( 'woocommerce_admin_meta_boxes_variations_per_page', 15 ) ),
 				);
 
@@ -298,9 +308,29 @@ if ( ! class_exists( 'WC_Admin_Assets', false ) ) :
 					'woocommerce_admin_meta_boxes_coupon',
 					array(
 						'generate_button_text' => esc_html__( 'Generate coupon code', 'woocommerce' ),
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						'characters'           => apply_filters( 'woocommerce_coupon_code_generator_characters', 'ABCDEFGHJKMNPQRSTUVWXYZ23456789' ),
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						'char_length'          => apply_filters( 'woocommerce_coupon_code_generator_character_length', 8 ),
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						'prefix'               => apply_filters( 'woocommerce_coupon_code_generator_prefix', '' ),
+						/**
+						 * Hook
+						 *
+						 * @since
+						 */
 						'suffix'               => apply_filters( 'woocommerce_coupon_code_generator_suffix', '' ),
 					)
 				);

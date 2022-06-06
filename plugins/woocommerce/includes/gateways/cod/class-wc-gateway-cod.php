@@ -54,7 +54,12 @@ class WC_Gateway_COD extends WC_Payment_Gateway {
 	 * Setup general properties for the gateway.
 	 */
 	protected function setup_properties() {
-		$this->id                 = 'cod';
+		$this->id = 'cod';
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$this->icon               = apply_filters( 'woocommerce_cod_icon', '' );
 		$this->method_title       = __( 'Cash on delivery', 'woocommerce' );
 		$this->method_description = __( 'Have your customers pay with cash (or by other means) upon delivery.', 'woocommerce' );
@@ -144,6 +149,11 @@ class WC_Gateway_COD extends WC_Payment_Gateway {
 			}
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$needs_shipping = apply_filters( 'woocommerce_cart_needs_shipping', $needs_shipping );
 
 		// Virtual order, with virtual disabled.

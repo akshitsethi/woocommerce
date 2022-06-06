@@ -36,6 +36,11 @@ class ReportsSync {
 	 * @throws \Exception Throws exception when invalid data is found.
 	 */
 	public static function get_schedulers() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$schedulers = apply_filters(
 			'woocommerce_analytics_report_schedulers',
 			array(

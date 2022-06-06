@@ -30,6 +30,11 @@ class WC_Helper_API {
 	 * The URL can be changed on plugins_loaded before priority 10.
 	 */
 	public static function load() {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		self::$api_base = apply_filters( 'woocommerce_helper_api_base', 'https://woocommerce.com/wp-json/helper/1.0' );
 	}
 

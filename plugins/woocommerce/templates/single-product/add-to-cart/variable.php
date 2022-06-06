@@ -23,6 +23,11 @@ $attribute_keys  = array_keys( $attributes );
 $variations_json = wp_json_encode( $available_variations );
 $variations_attr = function_exists( 'wc_esc_json' ) ? wc_esc_json( $variations_json ) : _wp_specialchars( $variations_json, ENT_QUOTES, 'UTF-8', true );
 
+/**
+ * Hook
+ *
+ * @since
+ */
 do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
 <form class="variations_form cart" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->get_id() ); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok. ?>">
@@ -45,6 +50,11 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 										'product'   => $product,
 									)
 								);
+								/**
+								 * Hook
+								 *
+								 * @since
+								 */
 								echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations" href="#">' . esc_html__( 'Clear', 'woocommerce' ) . '</a>' ) ) : '';
 							?>
 						</td>
@@ -82,4 +92,9 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 </form>
 
 <?php
+/**
+ * Hook
+ *
+ * @since
+ */
 do_action( 'woocommerce_after_add_to_cart_form' );

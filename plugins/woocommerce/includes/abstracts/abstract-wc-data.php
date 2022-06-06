@@ -349,6 +349,11 @@ abstract class WC_Data {
 		}
 
 		if ( 'view' === $context ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$value = apply_filters( $this->get_hook_prefix() . $key, $value, $this );
 		}
 
@@ -794,6 +799,11 @@ abstract class WC_Data {
 			$value = array_key_exists( $prop, $this->changes ) ? $this->changes[ $prop ] : $this->data[ $prop ];
 
 			if ( 'view' === $context ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$value = apply_filters( $this->get_hook_prefix() . $prop, $value, $this );
 			}
 		}

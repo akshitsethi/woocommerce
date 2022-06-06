@@ -26,6 +26,11 @@ foreach ( $items as $item_id => $item ) :
 	$purchase_note = '';
 	$image         = '';
 
+	/**
+	 * Hook
+	 *
+	 * @since
+	 */
 	if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
 		continue;
 	}
@@ -43,6 +48,11 @@ foreach ( $items as $item_id => $item ) :
 
 		// Show title/image etc.
 		if ( $show_image ) {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			echo wp_kses_post( apply_filters( 'woocommerce_order_item_thumbnail', $image, $item ) );
 		}
 
@@ -79,6 +89,11 @@ foreach ( $items as $item_id => $item ) :
 			} else {
 				$qty_display = esc_html( $qty );
 			}
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			echo wp_kses_post( apply_filters( 'woocommerce_email_order_item_quantity', $qty_display, $item ) );
 			?>
 		</td>

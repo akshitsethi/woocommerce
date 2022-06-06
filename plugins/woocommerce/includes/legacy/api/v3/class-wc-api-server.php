@@ -81,7 +81,10 @@ class WC_API_Server {
 	 *
 	 * @var array
 	 */
-	public $params = array( 'GET' => array(), 'POST' => array() );
+	public $params = array(
+		'GET'  => array(),
+		'POST' => array(),
+	);
 
 	/**
 	 * Request headers
@@ -183,7 +186,10 @@ class WC_API_Server {
 		$errors = array();
 		foreach ( (array) $error->errors as $code => $messages ) {
 			foreach ( (array) $messages as $message ) {
-				$errors[] = array( 'code' => $code, 'message' => $message );
+				$errors[] = array(
+					'code'    => $code,
+					'message' => $message,
+				);
 			}
 		}
 
@@ -201,6 +207,11 @@ class WC_API_Server {
 	 */
 	public function serve_request() {
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_api_server_before_serve', $this );
 
 		$this->header( 'Content-Type', $this->handler->get_content_type(), true );
@@ -210,7 +221,14 @@ class WC_API_Server {
 
 			$this->send_status( 404 );
 
-			echo $this->handler->generate_response( array( 'errors' => array( 'code' => 'woocommerce_api_disabled', 'message' => 'The WooCommerce API is disabled on this site' ) ) );
+			echo $this->handler->generate_response(
+				array(
+					'errors' => array(
+						'code'    => 'woocommerce_api_disabled',
+						'message' => 'The WooCommerce API is disabled on this site',
+					),
+				)
+			);
 
 			return;
 		}
@@ -272,6 +290,11 @@ class WC_API_Server {
 			'/' => array( array( $this, 'get_index' ), self::READABLE ),
 		);
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$endpoints = apply_filters( 'woocommerce_api_endpoints', $endpoints );
 
 		// Normalise the endpoints
@@ -294,28 +317,28 @@ class WC_API_Server {
 
 		switch ( $this->method ) {
 
-			case 'HEAD' :
-			case 'GET' :
+			case 'HEAD':
+			case 'GET':
 				$method = self::METHOD_GET;
 				break;
 
-			case 'POST' :
+			case 'POST':
 				$method = self::METHOD_POST;
 				break;
 
-			case 'PUT' :
+			case 'PUT':
 				$method = self::METHOD_PUT;
 				break;
 
-			case 'PATCH' :
+			case 'PATCH':
 				$method = self::METHOD_PATCH;
 				break;
 
-			case 'DELETE' :
+			case 'DELETE':
 				$method = self::METHOD_DELETE;
 				break;
 
-			default :
+			default:
 				return new WP_Error( 'woocommerce_api_unsupported_method', __( 'Unsupported request method', 'woocommerce' ), array( 'status' => 400 ) );
 		}
 
@@ -356,6 +379,11 @@ class WC_API_Server {
 				$args['_headers'] = $this->headers;
 				$args['_files']   = $this->files;
 
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				$args = apply_filters( 'woocommerce_api_dispatch_args', $args, $callback );
 
 				// Allow plugins to halt the request via this filter
@@ -411,7 +439,7 @@ class WC_API_Server {
 			$ref_func = new ReflectionFunction( $callback );
 		}
 
-		$wanted = $ref_func->getParameters();
+		$wanted             = $ref_func->getParameters();
 		$ordered_parameters = array();
 
 		foreach ( $wanted as $param ) {
@@ -505,9 +533,19 @@ class WC_API_Server {
 				}
 			}
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$available['store']['routes'][ $route ] = apply_filters( 'woocommerce_api_endpoints_description', $data );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( 'woocommerce_api_index', $available );
 	}
 
@@ -574,14 +612,14 @@ class WC_API_Server {
 		// WP_User_Query
 		if ( is_a( $query, 'WP_User_Query' ) ) {
 
-			$single      = count( $query->get_results() ) == 1;
-			$total       = $query->get_total();
+			$single = count( $query->get_results() ) == 1;
+			$total  = $query->get_total();
 
 			if ( $query->get( 'number' ) > 0 ) {
-				$page = ( $query->get( 'offset' ) / $query->get( 'number' ) ) + 1;
+				$page        = ( $query->get( 'offset' ) / $query->get( 'number' ) ) + 1;
 				$total_pages = ceil( $total / $query->get( 'number' ) );
 			} else {
-				$page = 1;
+				$page        = 1;
 				$total_pages = 1;
 			}
 		} elseif ( is_a( $query, 'stdClass' ) ) {
@@ -590,7 +628,7 @@ class WC_API_Server {
 			$total       = $query->total;
 			$total_pages = $query->total_pages;
 
-		// WP_Query
+			// WP_Query
 		} else {
 
 			$page        = $query->get( 'paged' );
@@ -610,7 +648,7 @@ class WC_API_Server {
 			// first/prev
 			if ( $page > 1 ) {
 				$this->link_header( 'first', $this->get_paginated_url( 1 ) );
-				$this->link_header( 'prev', $this->get_paginated_url( $page -1 ) );
+				$this->link_header( 'prev', $this->get_paginated_url( $page - 1 ) );
 			}
 
 			// next
@@ -627,6 +665,11 @@ class WC_API_Server {
 		$this->header( 'X-WC-Total', $total );
 		$this->header( 'X-WC-TotalPages', $total_pages );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		do_action( 'woocommerce_api_pagination_headers', $this, $query );
 	}
 
@@ -762,7 +805,11 @@ class WC_API_Server {
 	public function get_headers( $server ) {
 		$headers = array();
 		// CONTENT_* headers are not prefixed with HTTP_
-		$additional = array( 'CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true );
+		$additional = array(
+			'CONTENT_LENGTH' => true,
+			'CONTENT_MD5'    => true,
+			'CONTENT_TYPE'   => true,
+		);
 
 		foreach ( $server as $key => $value ) {
 			if ( strpos( $key, 'HTTP_' ) === 0 ) {

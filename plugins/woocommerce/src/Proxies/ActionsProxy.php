@@ -33,6 +33,11 @@ class ActionsProxy {
 	 * @return mixed The filtered value after all hooked functions are applied to it.
 	 */
 	public function apply_filters( $tag, $value, ...$parameters ) {
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		return apply_filters( $tag, $value, ...$parameters );
 	}
 

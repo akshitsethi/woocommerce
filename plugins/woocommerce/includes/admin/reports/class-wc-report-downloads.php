@@ -327,6 +327,11 @@ class WC_Report_Downloads extends WP_List_Table {
 			$query_from .= $wpdb->prepare( ' AND user_ip_address = %s ', $filters->user_ip_address );
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$query_from  = apply_filters( 'woocommerce_report_downloads_query_from', $query_from );
 		$query_order = $wpdb->prepare( 'ORDER BY timestamp DESC LIMIT %d, %d;', ( $current_page - 1 ) * $per_page, $per_page );
 

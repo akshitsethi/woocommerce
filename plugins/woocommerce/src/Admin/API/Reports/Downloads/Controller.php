@@ -110,8 +110,13 @@ class Controller extends ReportsController implements ExportableInterface {
 
 		// Make sure the product hasn't been deleted.
 		if ( $_product ) {
-			$file_path                   = $_product->get_file_download_path( $data['download_id'] );
-			$filename                    = basename( $file_path );
+			$file_path = $_product->get_file_download_path( $data['download_id'] );
+			$filename  = basename( $file_path );
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			$response->data['file_name'] = apply_filters( 'woocommerce_file_download_filename', $filename, $product_id );
 			$response->data['file_path'] = $file_path;
 		} else {

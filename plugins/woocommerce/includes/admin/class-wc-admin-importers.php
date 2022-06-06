@@ -180,7 +180,17 @@ class WC_Admin_Importers {
 								// Register the taxonomy now so that the import works!
 								register_taxonomy(
 									$term['domain'],
+									/**
+									 * Hook
+									 *
+									 * @since
+									 */
 									apply_filters( 'woocommerce_taxonomy_objects_' . $term['domain'], array( 'product' ) ),
+									/**
+									 * Hook
+									 *
+									 * @since
+									 */
 									apply_filters(
 										'woocommerce_taxonomy_args_' . $term['domain'],
 										array(

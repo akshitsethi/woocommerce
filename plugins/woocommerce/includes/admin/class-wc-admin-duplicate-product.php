@@ -38,6 +38,11 @@ class WC_Admin_Duplicate_Product {
 	public function dupe_link( $actions, $post ) {
 		global $the_product;
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( ! current_user_can( apply_filters( 'woocommerce_duplicate_product_capability', 'manage_woocommerce' ) ) ) {
 			return $actions;
 		}
@@ -73,6 +78,11 @@ class WC_Admin_Duplicate_Product {
 	public function dupe_button() {
 		global $post;
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		if ( ! current_user_can( apply_filters( 'woocommerce_duplicate_product_capability', 'manage_woocommerce' ) ) ) {
 			return;
 		}
@@ -136,6 +146,11 @@ class WC_Admin_Duplicate_Product {
 		 * @since 2.6
 		 */
 		$meta_to_exclude = array_filter(
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			apply_filters(
 				'woocommerce_duplicate_product_exclude_meta',
 				array(),

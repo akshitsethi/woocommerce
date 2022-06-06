@@ -152,10 +152,10 @@ class TaskLists {
 
 		self::add_list(
 			array(
-				'id'           => 'setup_experiment_2',
-				'hidden_id'    => 'setup',
-				'title'        => __( 'Get ready to start selling', 'woocommerce' ),
-				'tasks'        => array(
+				'id'                      => 'setup_experiment_2',
+				'hidden_id'               => 'setup',
+				'title'                   => __( 'Get ready to start selling', 'woocommerce' ),
+				'tasks'                   => array(
 					'StoreCreation',
 					'StoreDetails',
 					'Products',
@@ -166,14 +166,14 @@ class TaskLists {
 					'Marketing',
 					'Appearance',
 				),
-				'event_prefix' => 'tasklist_',
-				'visible'      => self::is_experiment_treatment( 'woocommerce_tasklist_setup_experiment_2' )
+				'event_prefix'            => 'tasklist_',
+				'visible'                 => self::is_experiment_treatment( 'woocommerce_tasklist_setup_experiment_2' )
 					&& ! self::is_experiment_treatment( 'woocommerce_tasklist_setup_experiment_1' ),
-				'options'      => array(
+				'options'                 => array(
 					'use_completed_title' => true,
 				),
 				'display_progress_header' => true,
-				'sections'     => array(
+				'sections'                => array(
 					array(
 						'id'          => 'basics',
 						'title'       => __( 'Cover the basics', 'woocommerce' ),
@@ -467,13 +467,13 @@ class TaskLists {
 	 *
 	 * @return number
 	 */
-	public static function setup_tasks_remaining () {
+	public static function setup_tasks_remaining() {
 
 		$active_list = self::is_experiment_treatment( 'woocommerce_tasklist_setup_experiment_1' ) ? 'setup_experiment_1' : ( self::is_experiment_treatment( 'woocommerce_tasklist_setup_experiment_2' ) ? 'setup_experiment_2' : 'setup' );
 
 		$setup_list = self::get_list( $active_list );
 
-		if( ! $setup_list || $setup_list->is_hidden() || $setup_list->is_complete() ) {
+		if ( ! $setup_list || $setup_list->is_hidden() || $setup_list->is_complete() ) {
 			return;
 		}
 
@@ -497,7 +497,7 @@ class TaskLists {
 
 		$tasks_count = self::setup_tasks_remaining();
 
-		if( ! $tasks_count ) {
+		if ( ! $tasks_count ) {
 			return;
 		}
 

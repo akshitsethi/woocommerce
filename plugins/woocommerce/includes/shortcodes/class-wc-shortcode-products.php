@@ -232,6 +232,11 @@ class WC_Shortcode_Products {
 		// Tags.
 		$this->set_tags_query_args( $query_args );
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$query_args = apply_filters( 'woocommerce_shortcode_products_query', $query_args, $this->attributes, $this->type );
 
 		// Always query only IDs.
@@ -639,10 +644,20 @@ class WC_Shortcode_Products {
 
 			$original_post = $GLOBALS['post'];
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( "woocommerce_shortcode_before_{$this->type}_loop", $this->attributes );
 
 			// Fire standard shop loop hooks when paginating results so we can show result counts and so on.
 			if ( wc_string_to_bool( $this->attributes['paginate'] ) ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				do_action( 'woocommerce_before_shop_loop' );
 			}
 
@@ -669,14 +684,29 @@ class WC_Shortcode_Products {
 
 			// Fire standard shop loop hooks when paginating results so we can show result counts and so on.
 			if ( wc_string_to_bool( $this->attributes['paginate'] ) ) {
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				do_action( 'woocommerce_after_shop_loop' );
 			}
 
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( "woocommerce_shortcode_after_{$this->type}_loop", $this->attributes );
 
 			wp_reset_postdata();
 			wc_reset_loop();
 		} else {
+			/**
+			 * Hook
+			 *
+			 * @since
+			 */
 			do_action( "woocommerce_shortcode_{$this->type}_loop_no_results", $this->attributes );
 		}
 

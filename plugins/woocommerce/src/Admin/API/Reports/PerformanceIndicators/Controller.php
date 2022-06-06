@@ -219,6 +219,11 @@ class Controller extends \WC_REST_Reports_Controller {
 			return;
 		}
 
+		/**
+		 * Hook
+		 *
+		 * @since
+		 */
 		$items = apply_filters(
 			'woocommerce_rest_performance_indicators_jetpack_items',
 			array(
@@ -446,6 +451,11 @@ class Controller extends \WC_REST_Reports_Controller {
 				'chart'  => $chart,
 				'label'  => $label,
 				'format' => $format,
+				/**
+				 * Hook
+				 *
+				 * @since
+				 */
 				'value'  => apply_filters( 'woocommerce_rest_performance_indicators_data_value', $data, $stat, $report, $chart, $query_args ),
 			);
 		}
